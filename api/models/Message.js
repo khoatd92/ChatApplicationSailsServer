@@ -8,8 +8,8 @@
 module.exports = {
 
   attributes: {
-    receiveId: 'STRING',
-    senderId: 'STRING',
+    phoneNumberReceiver: 'STRING',
+    phoneNumberSender: 'STRING',
     messageId: 'STRING',
     isReceived: 'STRING',
     message: 'STRING',

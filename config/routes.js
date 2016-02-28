@@ -31,7 +31,7 @@ module.exports.routes = {
   * `assets` directory)                                                      *
   *                                                                          *
   ***************************************************************************/
-  '/signup': {
+  '/signUp': {
     controller: 'main',
     action: 'signup'
   },
@@ -47,9 +47,17 @@ module.exports.routes = {
     controller: 'main',
     action: 'chat'
   },
-  '/synccontact': {
+  '/syncContact': {
     controller: 'main',
     action: 'synccontact'
+  },
+  '/getAllUserOnline': {
+    controller: 'UserController',
+    action: 'getAllUserOnline'
+  },
+  '/chat': {
+    controller: 'MessageController',
+    action: 'chat'
   }
   /***************************************************************************
   *                                                                          *

@@ -9,15 +9,14 @@ module.exports = {
 
   attributes: {
     phoneNumber: 'STRING',
-    password: 'STRING',
     socketId: 'STRING',
     token: 'STRING',
-    displayName: 'STRING',
     lastLoginTimestamp: 'STRING',
     status: 'STRING',
     userStatusMessage:'STRING',
     profilePhotoURL:'STRING',
-    listFriendByPhoneNumber: 'STRING'
+    listFriendByPhoneNumber: 'STRING',
+    activeCode: 'STRING'
   }
 };
 

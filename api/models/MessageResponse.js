@@ -43,3 +43,5 @@ module.exports.SYNC_CONTACT_SUCCESSFUL = 604;
 module.exports.SYNC_CONTACT_SUCCESSFUL_MESSAGE = "Sync contact successful";
 module.exports.SIGN_UP_SUCCESSFUL = 605;
 module.exports.SIGN_UP_SUCCESSFUL_MESSAGE = "Signup successful";
+module.exports.GET_ALL_USER_ONLINE_SUCCESSFUL = 606;
+module.exports.GET_ALL_USER_ONLINE_SUCCESSFUL_MESSAGE = "Get All User Online Successful";
