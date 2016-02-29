@@ -58,8 +58,9 @@ module.exports = {
     console.log("sync contact start");
     var arrayPhoneNumber = req.param("listphonenumber");
     var phoneNumber = req.param("phoneNumber");
-    console.log("sycn contact : list phone number " + arrayPhoneNumber);
+    console.log("sycn contact : for user " + phoneNumber);
     var phoneNumberActive = [];
+    var listFriendByPhoneNumber = [];
     async.forEach(arrayPhoneNumber, function (item, callback) {
       //console.log('sycn contact search phone number ' + item);
       User.findOne({phoneNumber: item}).exec(function (err, result) {
@@ -70,6 +71,7 @@ module.exports = {
           if (result) {
             //User.subscribe(result.socketId, result.phoneNumber);
             phoneNumberActive.push(result);
+            listFriendByPhoneNumber.push(item);
             //console.log("sycn contact User Found " + item);
           } else {
             //console.log("sycn contact User not Found " + item);
@@ -78,16 +80,17 @@ module.exports = {
         }
       });
     }, function (err) {
-      console.log('Processed finish ' + phoneNumberActive);
       if (err) {
         console.error(err.message);
       } else {
-        //User.update({phoneNumber: phoneNumber}, {listFriendByPhoneNumber: phoneNumberActive}).exec(function afterwards(err, updated) {
-        //  if (err) {
-        //    return;
-        //  }
-        //  console.log('Add phone number after sync');
-        //});
+        if(listFriendByPhoneNumber.length > 0){
+          User.update({phoneNumber: phoneNumber}, {listFriendByPhoneNumber: listFriendByPhoneNumber}).exec(function afterwards(err, updated) {
+            if (err) {
+              return;
+            }
+            console.log('Add phone number after sync '+listFriendByPhoneNumber);
+          });
+        }
         res.send(200, MessageResponse.create(MessageResponse.SYNC_CONTACT_SUCCESSFUL, MessageResponse.SYNC_CONTACT_SUCCESSFUL_MESSAGE, phoneNumberActive));
         console.log('Processed successfully');
       }

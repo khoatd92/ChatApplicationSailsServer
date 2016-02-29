@@ -12,13 +12,16 @@ module.exports = {
     if (request.isSocket) {
       var socketId = request.socket.id;
       var socket = request.socket;
-      console.log("loginSocket socket id " + socketId+"===phone number "+dataFromClient.phoneNumber);
+      console.log("loginSocket socket id " + socketId + "===phone number " + dataFromClient.phoneNumber);
       User.findOne({phoneNumber: dataFromClient.phoneNumber}).exec(function (error, user) {
-        if(error){
+        if (error) {
           request.socket.disconnect();
           response.send(404, {error: error});
-        }else if(user){
-          User.update({phoneNumber:dataFromClient.phoneNumber},{socketId:socketId,status:'Online'}).exec(function afterwards(err, updated){
+        } else if (user) {
+          User.update({phoneNumber: dataFromClient.phoneNumber}, {
+            socketId: socketId,
+            status: 'Online'
+          }).exec(function afterwards(err, updated) {
             if (err) {
               return;
             }
@@ -26,11 +29,22 @@ module.exports = {
             usersOnline.put(socketId, updated[0]);
           });
           console.log("Login Socket successful");
+          var listFriendByPhoneNumber = [];
+          var listFriendDatabase = user.listFriendByPhoneNumber;
+          if(listFriendDatabase != undefined){
+            listFriendByPhoneNumber = user.listFriendByPhoneNumber.split(",");
+            console.log("List friend "+user.listFriendByPhoneNumber);
+            for(i = 0; i < listFriendByPhoneNumber.length; i++){
+              console.log("subscribe friend "+listFriendByPhoneNumber[i]);
+              sails.sockets.join(socketId, listFriendByPhoneNumber[i]);
+            }
+          }
           User.subscribe(socket, user, 'message');
           // Get updates about users being created
           User.watch(socket);
-          sails.sockets.emit(socketId, 'loginSocket',user);
-        }else{
+          sails.sockets.join(socketId, dataFromClient.phoneNumber);
+          sails.sockets.emit(socketId, 'loginSocket', user);
+        } else {
           console.log("User not found for login socket")
         }
       });
@@ -39,28 +53,28 @@ module.exports = {
     }
   },
 
-  getUsersOnline : function(socketId) {
+  getUsersOnline: function (socketId) {
     return usersOnline.get(socketId);
   },
 
-  removeUserOffline : function(socketId){
-      usersOnline.del(socketId);
+  removeUserOffline: function (socketId) {
+    usersOnline.del(socketId);
   },
 
-  getSizeOfUsersOnline : function(){
+  getSizeOfUsersOnline: function () {
     return usersOnline.size();
   },
 
-  getAllUserOnline : function(request, response){
+  getAllUserOnline: function (request, response) {
     var dataFromClient = request.params.all();
     User.findOne({phoneNumber: dataFromClient.phoneNumber}).exec(function (error, user) {
-      if(error){
+      if (error) {
         response.send(404, {error: error});
-      }else if(user){
-        console.log("Size usersOnline "+usersOnline.size());
+      } else if (user) {
+        console.log("Size usersOnline " + usersOnline.size());
         var keys = usersOnline.keys();
         var users = [];
-        for(i = 0; i< keys.length; i++){
+        for (i = 0; i < keys.length; i++) {
           users.push(usersOnline.get(keys[i]));
         }
         response.send(200, MessageResponse.create(MessageResponse.GET_ALL_USER_ONLINE_SUCCESSFUL, MessageResponse.GET_ALL_USER_ONLINE_SUCCESSFUL_MESSAGE, users));
