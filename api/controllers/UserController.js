@@ -29,21 +29,11 @@ module.exports = {
             usersOnline.put(socketId, updated[0]);
           });
           console.log("Login Socket successful");
-          var listFriendByPhoneNumber = [];
-          var listFriendDatabase = user.listFriendByPhoneNumber;
-          if(listFriendDatabase != undefined){
-            listFriendByPhoneNumber = user.listFriendByPhoneNumber.split(",");
-            console.log("List friend "+user.listFriendByPhoneNumber);
-            for(i = 0; i < listFriendByPhoneNumber.length; i++){
-              console.log("subscribe friend "+listFriendByPhoneNumber[i]);
-              sails.sockets.join(socketId, listFriendByPhoneNumber[i]);
-            }
-          }
           User.subscribe(socket, user, 'message');
           // Get updates about users being created
           User.watch(socket);
           sails.sockets.join(socketId, dataFromClient.phoneNumber);
-          sails.sockets.emit(socketId, 'loginSocket', user);
+          sails.sockets.broadcast(socketId, 'loginSocket', user);
         } else {
           console.log("User not found for login socket")
         }
