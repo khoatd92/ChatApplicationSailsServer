@@ -43,10 +43,6 @@ module.exports.routes = {
     controller: 'UserController',
     action: 'loginSocket'
   },
-  '/chat': {
-    controller: 'main',
-    action: 'chat'
-  },
   '/syncContact': {
     controller: 'main',
     action: 'synccontact'

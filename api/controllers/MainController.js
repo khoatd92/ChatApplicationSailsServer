@@ -43,17 +43,6 @@ module.exports = {
     });
   },
 
-  chat: function (req, res) {
-    var data_from_client = req.params.all();
-    console.log("chat function req.method  " + req.method);
-    console.log("chat function " + data_from_client.phoneNumber);
-    if (req.isSocket && req.method === 'POST') {
-      console.log("This is the message from connected client So add new conversation");
-    } else if (req.isSocket) {
-      console.log("subscribe client to model changes");
-    }
-  },
-
   syncContact: function (req, res) {
     console.log("sync contact start");
     var arrayPhoneNumber = req.param("listphonenumber");
