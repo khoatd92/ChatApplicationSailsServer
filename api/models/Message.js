@@ -8,9 +8,15 @@
 module.exports = {
 
   attributes: {
-    phoneNumberReceiver: 'STRING',
+    phoneNumberReceiver: {
+      type: 'STRING',
+      index: true
+    },
     phoneNumberSender: 'STRING',
-    messageId: 'STRING',
+    messageId: {
+      type: 'STRING',
+      index: true
+    },
     isReceived: 'STRING',
     message: 'STRING',
     messageTimestamp: 'STRING',
