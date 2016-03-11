@@ -10,8 +10,10 @@ module.exports = {
     console.log("start signup: phone number " + phoneNumber);
     User.findOne({phoneNumber: phoneNumber}).exec(function (err, result) {
       if (err) {
+        console.log("Database error");
         res.send(200, MessageResponse.create(MessageResponse.SERVER_ERROR, MessageResponse.SERVER_ERROR_MESSAGE, "DB Error"));
       } else if (result) {
+        console.log("Phone number already taken");
         res.send(200, MessageResponse.create(MessageResponse.PHONE_NUMBER_ALREADY_TAKEN, MessageResponse.PHONE_NUMBER_ALREADY_TAKEN_MESSAGE, MessageResponse.PHONE_NUMBER_ALREADY_TAKEN_MESSAGE));
       } else {
         User.create({phoneNumber: phoneNumber, userStatusMessage: "Hi there! I am using Sweet Love"}).exec(function (error, user) {

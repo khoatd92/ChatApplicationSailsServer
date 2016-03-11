@@ -9,13 +9,12 @@ module.exports = {
   chat: function (request, response) {
     var dataFromClient = request.params.all();
     if (request.isSocket) {
-      var socketId = request.socket.id;
-      var socket = request.socket;
       var message = dataFromClient.message;
       var senderId = dataFromClient.senderId;
       var receiveId = dataFromClient.receiveId;
-      console.log("chat message "+message+"--phoneNumberSender "+senderId+"---receive id "+receiveId);
-      Message.create({message: message, phoneNumberSender: senderId, phoneNumberReceiver: receiveId}).exec(function (error, message) {
+      var messageId = dataFromClient.messageId;
+      console.log("chat message "+message+"--phoneNumberSender "+senderId+"---receive id "+receiveId+"---message id "+messageId);
+      Message.create({message: message, phoneNumberSender: senderId, phoneNumberReceiver: receiveId,messageId:messageId}).exec(function (error, message) {
         if(error){
           console.log("create message error ");
         }else{
